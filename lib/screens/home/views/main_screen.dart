@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:expense_tracker/data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -173,9 +175,9 @@ class MainScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 'Expenses',
                                 style: TextStyle(
@@ -230,73 +232,82 @@ class MainScreen extends StatelessWidget {
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, i) {
+              itemCount: transactionsData.length,
+              itemBuilder: (context, int i) {
                 return Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Container(
-                      margin: const EdgeInsets.only(bottom: 4),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 36,
-                                    height: 36,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.yellow,
-                                      shape: BoxShape.circle,
-                                    ),
+                    margin: const EdgeInsets.only(bottom: 4),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  width: 46,
+                                  height: 46,
+                                  decoration: BoxDecoration(
+                                    color: transactionsData[i]['color'],
+                                    shape: BoxShape.circle,
                                   ),
-                                  Icon(Icons.food_bank)
-                                ],
+                                ),
+                                // Use FaIcon directly here
+                                FaIcon(
+                                  transactionsData[i]['icon']
+                                      .icon, // Extract the icon from the FaIcon
+                                  color: Colors
+                                      .white, // Set the color to white (or any color you want)
+                                  size: 16, // Adjust the size as needed
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              transactionsData[i]['name'],
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontWeight: FontWeight.w500,
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                'Food',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              transactionsData[i]['totalAmount'],
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontWeight: FontWeight.w400,
                               ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                '-\$45.00',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w400),
+                            ),
+                            Text(
+                              transactionsData[i]['date'],
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).colorScheme.outline,
+                                fontWeight: FontWeight.w400,
                               ),
-                              Text(
-                                'Today',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color:
-                                        Theme.of(context).colorScheme.outline,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
-                      )),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
-          ),
+          )
         ],
       ),
     );
