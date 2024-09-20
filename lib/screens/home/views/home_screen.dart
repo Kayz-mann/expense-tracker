@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:math';
 
 import 'package:expense_tracker/screens/home/views/main_screen.dart';
@@ -16,30 +14,38 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
         child: BottomNavigationBar(
-            backgroundColor: Colors.white,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            elevation: 3,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.graph_square_fill), label: 'Stats')
-            ]),
+          backgroundColor: Colors.white,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          elevation: 3,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.graph_square_fill), label: 'Stats')
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
+        // Use CircleBorder to ensure circular shape
         shape: const CircleBorder(),
         child: Container(
+          // Ensuring the container itself is circular
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.tertiary,
-            Theme.of(context).colorScheme.primary,
-          ], transform: const GradientRotation(pi / 4))),
+            shape: BoxShape.circle, // Enforce circular shape
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.tertiary,
+                Theme.of(context).colorScheme.primary,
+              ],
+              transform: const GradientRotation(pi / 4),
+            ),
+          ),
           child: const Icon(CupertinoIcons.add),
         ),
       ),
