@@ -38,6 +38,15 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   fl_chart: ^0.69.0
   intl: ^0.19.0
+  flutter_colorpicker: ^1.1.0
+  expense_repository:
+    path: packages/expense_repository
+  firebase_core: ^2.32.0
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+expense_repository:
+    path: packages/expense_repository
 
 dev_dependencies:
   flutter_test:
