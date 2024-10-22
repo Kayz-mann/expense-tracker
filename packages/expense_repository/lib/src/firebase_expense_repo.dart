@@ -15,7 +15,7 @@ class FirebaseExpenseRepo implements ExpenseRepository {
           .doc(category.categoryId)
           .set(category.toEntity().toDocument());
     } catch (e) {
-      log(e.toString() as num);
+      print('Error creating category: $e');
       rethrow;
     }
   }
@@ -29,7 +29,35 @@ class FirebaseExpenseRepo implements ExpenseRepository {
               (e) => Category.fromEntity(CategoryEntity.fromDocument(e.data())))
           .toList();
     } catch (e) {
-      log(e.toString() as num);
+      print('Error creating category: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<void> createExpense(Expense expense) async {
+    try {
+      // Create ExpenseEntity first
+      Expense expenseEntity = expense.toEntity();
+      // Then convert to document
+      await expenseCollection
+          .doc(expense.expenseId)
+          .set(expenseEntity.toDocument());
+    } catch (e) {
+      print('Error creating expense: ${e.toString()}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Expense>> getExpenses() async {
+    try {
+      final snapshot = await expenseCollection.get();
+      return snapshot.docs
+          .map((e) => Expense.fromEntity(ExpenseEntity.fromDocument(e.data())))
+          .toList();
+    } catch (e) {
+      print('Error creating category: $e');
       return [];
     }
   }

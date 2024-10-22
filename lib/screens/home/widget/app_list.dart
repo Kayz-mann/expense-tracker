@@ -1,88 +1,119 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:expense_tracker/screens/add_expense/blocs/bloc/get_expenses_bloc/get_expenses_bloc.dart';
+import 'package:intl/intl.dart';
 
 class AppListView extends StatelessWidget {
-  final List<Map<String, dynamic>> listData;
-
-  const AppListView({Key? key, required this.listData}) : super(key: key);
+  const AppListView({Key? key}) : super(key: key); // Remove listData parameter
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: listData.length,
-      itemBuilder: (context, int i) {
-        return Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 4),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 46,
-                          height: 46,
-                          decoration: BoxDecoration(
-                            color: listData[i]['color'],
-                            shape: BoxShape.circle,
+    return BlocBuilder<GetExpensesBloc, GetExpensesState>(
+      builder: (context, state) {
+        if (state is GetExpensesLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state is GetExpensesFailure) {
+          return const Center(
+            child: Text('Failed to load expenses'),
+          );
+        }
+
+        if (state is GetExpensesSuccess) {
+          final expenses = state.expenses;
+
+          return ListView.builder(
+            itemCount: expenses.length,
+            itemBuilder: (context, int i) {
+              final expense = expenses[i];
+
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 46,
+                                height: 46,
+                                decoration: BoxDecoration(
+                                  color: Color(expense.category
+                                      .color), // Update with actual category color
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              // FaIcon(
+                              //   expense.category.icon
+                              //       as IconData?, // Update with actual category icon
+                              //   color: Colors.white,
+                              //   size: 16,
+                              // ),
+                              Image.asset(
+                                'assets/${expense.category.icon}.png',
+                                scale: 2,
+                                color: Colors.white,
+                              )
+                            ],
                           ),
-                        ),
-                        // Use FaIcon directly here
-                        FaIcon(
-                          listData[i]['icon']
-                              .icon, // Extract the icon from the FaIcon
-                          color: Colors
-                              .white, // Set the color to white (or any color you want)
-                          size: 16, // Adjust the size as needed
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      listData[i]['name'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.w500,
+                          const SizedBox(width: 10),
+                          Text(
+                            expense.category
+                                .name, // Update with actual category name
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '\$${expense.amount}', // Format amount as needed
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            DateFormat('dd/MM/yyyy').format(expense.date),
+                            // expense.date.toString(), // Format date as needed
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.outline,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      listData[i]['totalAmount'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      listData[i]['date'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        );
+              );
+            },
+          );
+        }
+
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

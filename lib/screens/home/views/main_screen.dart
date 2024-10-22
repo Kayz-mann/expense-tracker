@@ -54,7 +54,7 @@ class MainScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          Expanded(child: AppListView(listData: transactionsData))
+          Expanded(child: AppListView())
         ],
       ),
     );

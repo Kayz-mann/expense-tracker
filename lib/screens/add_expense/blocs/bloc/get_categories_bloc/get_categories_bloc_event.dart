@@ -6,3 +6,5 @@ sealed class GetCategoriesBlocEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetCategories extends GetCategoriesBlocEvent {}
