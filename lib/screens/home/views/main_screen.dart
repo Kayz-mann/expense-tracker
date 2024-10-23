@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:expense_tracker/data/data.dart';
 import 'package:expense_tracker/screens/home/widget/app_list.dart';
 import 'package:expense_tracker/screens/home/widget/home_header.dart';
 import 'package:expense_tracker/screens/home/widget/wallet_balance.dart';

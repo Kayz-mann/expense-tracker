@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expense_tracker/screens/add_expense/blocs/bloc/get_expenses_bloc/get_expenses_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -111,9 +109,13 @@ class AppListView extends StatelessWidget {
               );
             },
           );
+        } else if (state is GetExpensesInitial) {
+          return const Center(
+            child: Text("No expenses recorded"),
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
         }
-
-        return const Center(child: CircularProgressIndicator());
       },
     );
   }
