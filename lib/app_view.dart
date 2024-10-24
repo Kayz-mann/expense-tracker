@@ -27,7 +27,7 @@ class MyAppView extends StatelessWidget {
         create: (context) => GetExpensesBloc(
           context.read<ExpenseRepository>(),
         )..add(GetExpenses()), // Immediately fetch expenses when created
-        child: HomeScreen(),
+        child: const HomeScreen(),
       ),
     );
   }
